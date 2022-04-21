@@ -10,46 +10,70 @@ namespace SimpleTabbedNavigation
     public class Bootstrapper : BootstrapperBase
     {
 
-        private SimpleContainer _container = new SimpleContainer();
+        private SimpleContainer container = new SimpleContainer();
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Bootstrapper()
         {
             Initialize();
         }
 
+
+        /// <summary>
+        /// Builds up the IoC container
+        /// </summary>
+        /// <param name="instance">The object that should be added to the container</param>
+        protected override void BuildUp(object instance)
+        {
+            container.BuildUp(instance);
+        }
+
+        /// <summary>
+        /// Configures the IoC container and instantiates necessary objects
+        /// </summary>
         protected override void Configure()
         {
-            _container
-                .Singleton<IWindowManager, WindowManager>()
+            container
+                .Singleton<IWindowManager, AppWindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>();
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
                 .Where(type => type.Name.EndsWith("ViewModel"))
                 .ToList()
-                .ForEach(viewModelType => _container.RegisterPerRequest(
+                .ForEach(viewModelType => container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
+
         }
 
-        protected override void OnStartup(object sender, StartupEventArgs e)
-        {
-            DisplayRootViewFor<ShellViewModel>();
-        }
-
+        /// <summary>
+        /// Retrieves the requested service from the IoC container
+        /// </summary>
+        /// <param name="service">The service to be retrieved</param>
+        /// <param name="key">The name of the service</param>
+        /// <returns></returns>
         protected override object GetInstance(Type service, string key)
         {
-            return _container.GetInstance(service, key);
+            var instance = this.container.GetInstance(service, key);
+            if (instance != null)
+            {
+                return instance;
+            }
+
+            throw new Exception("Could not locate any instances.");
         }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
-            return _container.GetAllInstances(service);
-        }
 
-
-        protected override void BuildUp(object instance)
+        /// <summary>
+        /// Called on application startup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            _container.BuildUp(instance);
+            DisplayRootViewFor<DemoViewModel>();
         }
 
     }
