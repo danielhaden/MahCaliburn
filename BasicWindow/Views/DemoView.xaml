@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:BasicWindow.Views"
              xmlns:cal="http://www.caliburnproject.org"
              Background="White"
@@ -11,21 +12,52 @@
     <StackPanel Orientation="Vertical"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-        
+
         <TextBlock 
             Text="Displaying DemoView.xaml"
             FontSize="40"
             Foreground="{DynamicResource MahApps.Brushes.Flyout.Foreground}"/>
 
-        <Button
-            Content="{Binding ButtonDemoContent}"
-            cal:Message.Attach="[Event OnHover] = [Action OnMouseHover]"
-            Width="200" />
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Content="Simple MahCaliburn Button"
+                cal:Message.Attach="SimpleButtonClick"
+                Style="{DynamicResource MahApps.Styles.Button.Square}"
+                Padding="5" />
 
+            <TextBlock
+                Text="{Binding SimpleButtonEventMessage}" />
 
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Content="Multi-action button"
+                Style="{DynamicResource MahApps.Styles.Button.Square}"
+                Padding="5" >
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <cal:ActionMessage MethodName="Button3MouseEnter"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <cal:ActionMessage MethodName="Button3MouseLeave"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Click">
+                        <cal:ActionMessage MethodName="Button3Click"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <TextBlock
+                Text="{Binding Button2EventMessage}"
+                VerticalAlignment="Center"/>
+
+        </StackPanel>
+        
         <Button Style="{DynamicResource MahApps.Styles.Button.Square}"
                 Content="See Dialog Window"
-                cal:Message.Attach="[Event MouseEnter] = [Action OnMouseHover]"
+                cal:Message.Attach="ShowDialogWindow"
                 Width="200"
                 Margin="15" />
 

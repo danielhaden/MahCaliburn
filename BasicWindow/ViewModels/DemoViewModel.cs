@@ -15,29 +15,64 @@ namespace BasicWindow.ViewModels
         /// </summary>
         private readonly IEventAggregator events;
 
-        public string ButtonDemoContent { get; set; } = "Hover mouse to see demo";
 
-        /// <summary>
+        #region Properties
+        private string simpleButtonEventMessage;
+        public string SimpleButtonEventMessage
+        {
+            get => simpleButtonEventMessage;
+            set => Set(ref simpleButtonEventMessage, value);
+        }
+
+        private string button2EventMessage;
+        public string Button2EventMessage
+        {
+            get => button2EventMessage;
+            set => Set(ref button2EventMessage, value);
+        }
+        #endregion
+
+        #region Constructors
+        /// <summary>       
         /// Default constructor
         /// </summary>
         /// <param name="_events"></param>
         public DemoViewModel(IEventAggregator _events)
-        {
+            {
 
-            events = _events;
-            events.SubscribeOnPublishedThread(this);
+                events = _events;
+                events.SubscribeOnPublishedThread(this);
 
-        }
+            }
+        #endregion
 
-        public async void OnSeeDialogWindowClick()
-        {
-            await Task.Run(() => Console.WriteLine("GOT HERE"));
-        }
+        #region Actions
+            public void SimpleButtonClick()
+            {
+                SimpleButtonEventMessage = "used cal:Message.Attach";
+            }
 
-        public async void OnMouseHover()
-        {
-            await Task.Run(() => ButtonDemoContent = "!!!!!");
-            Refresh();
-        }
+            public void Button3MouseEnter()
+            {
+                Button2EventMessage = "Mouse hovered over button2";
+            }
+
+            public void Button3MouseLeave()
+            {
+                Button2EventMessage = "Mouse left button2";
+            }
+
+            public void Button3Click()
+            {
+                Button2EventMessage = "Mouse clicked button2";
+            }
+
+            public void ShowDialogWindow()
+            {
+
+            }
+
+        #endregion
+
     }
 }
