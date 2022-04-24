@@ -13,7 +13,7 @@ namespace BasicWindow.ViewModels
         /// <summary>
         /// Stores the events aggregator
         /// </summary>
-        private readonly IEventAggregator events;
+        private readonly IEventAggregator eventAggregator;
 
 
         #region Properties
@@ -37,12 +37,10 @@ namespace BasicWindow.ViewModels
         /// Default constructor
         /// </summary>
         /// <param name="_events"></param>
-        public DemoViewModel(IEventAggregator _events)
+        public DemoViewModel(IEventAggregator _eventAggregator)
             {
-
-                events = _events;
-                events.SubscribeOnPublishedThread(this);
-
+                eventAggregator = _eventAggregator;
+                eventAggregator.SubscribeOnPublishedThread(this);
             }
         #endregion
 
