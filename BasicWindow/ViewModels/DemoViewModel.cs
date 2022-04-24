@@ -9,12 +9,10 @@ namespace BasicWindow.ViewModels
 {
     public class DemoViewModel : PropertyChangedBase
     {
-
         /// <summary>
         /// Stores the events aggregator
         /// </summary>
         private readonly IEventAggregator eventAggregator;
-
 
         #region Properties
         private string simpleButtonEventMessage;
@@ -71,6 +69,5 @@ namespace BasicWindow.ViewModels
             }
 
         #endregion
-
     }
 }
